@@ -1,0 +1,220 @@
+{
+ "settings": {
+  "brand": "NexNode",
+  "tagline": "PREMIUM • SNEL • BETROUWBAAR",
+  "heroTitle": "Hosting die nooit stilstaat",
+  "heroText": "Krachtige servers, 24/7 DDoS-bescherming en direct online. Met Nederlandse support en gratis back-ups.",
+  "promo": "🎉 Eerste maand 20% korting op geselecteerde producten",
+  "promoLink": "#products",
+  "ctaText": "Bekijk producten",
+  "panelUrl": "#",
+  "discord": "https://discord.gg/JOUW-INVITE",
+  "email": "info@jouwdomein.nl",
+  "bannerImage": "assets/banner.gif",
+  "logoImage": "assets/logo.png",
+  "companyInfo": "NexNode\nStraat 1\n0000 AA Plaats\nKVK / BTW: invullen",
+  "footerText": "© 2026 NexNode. Alle rechten voorbehouden.",
+  "productsTitle": "Onze producten",
+  "featuresTitle": "Waarom NexNode",
+  "locationsTitle": "Servers wereldwijd",
+  "reviewsTitle": "Wat onze klanten zeggen"
+ },
+ "categories": [
+  {
+   "id": "c1",
+   "icon": "🎮",
+   "name": "Gameservers",
+   "desc": "Minecraft, Rust, FiveM en meer"
+  },
+  {
+   "id": "c2",
+   "icon": "☁️",
+   "name": "VPS",
+   "desc": "Flexibele virtuele servers"
+  },
+  {
+   "id": "c3",
+   "icon": "⚡",
+   "name": "VDS",
+   "desc": "Dedicated cores voor zware workloads"
+  },
+  {
+   "id": "c4",
+   "icon": "🖥️",
+   "name": "Dedicated",
+   "desc": "Volledige fysieke servers"
+  }
+ ],
+ "products": [
+  {
+   "id": "p1",
+   "cat": "c1",
+   "name": "Minecraft Starter",
+   "price": "1.50",
+   "period": "mnd",
+   "badge": "",
+   "desc": "Voor vrienden en kleine communities.",
+   "features": "2 GB RAM\n20 slots\nDDoS-bescherming\nGratis back-ups",
+   "url": "#",
+   "active": true
+  },
+  {
+   "id": "p2",
+   "cat": "c1",
+   "name": "Rust",
+   "price": "22.50",
+   "period": "mnd",
+   "badge": "Populair",
+   "desc": "Draait soepel met veel spelers.",
+   "features": "8 GB RAM\nNVMe-opslag\nDDoS-bescherming\nDirect online",
+   "url": "#",
+   "active": true
+  },
+  {
+   "id": "p3",
+   "cat": "c1",
+   "name": "FiveM",
+   "price": "3.99",
+   "period": "mnd",
+   "badge": "",
+   "desc": "Voor roleplay-servers.",
+   "features": "4 GB RAM\n50 slots\nDDoS-bescherming\nInstant setup",
+   "url": "#",
+   "active": true
+  },
+  {
+   "id": "p4",
+   "cat": "c2",
+   "name": "VPS S",
+   "price": "6.00",
+   "period": "mnd",
+   "badge": "",
+   "desc": "Instap-VPS met root-toegang.",
+   "features": "2 vCPU\n4 GB RAM\n50 GB NVMe\nDDoS-bescherming",
+   "url": "#",
+   "active": true
+  },
+  {
+   "id": "p5",
+   "cat": "c2",
+   "name": "VPS M",
+   "price": "12.00",
+   "period": "mnd",
+   "badge": "Beste keuze",
+   "desc": "Meer kracht voor je project.",
+   "features": "4 vCPU\n8 GB RAM\n100 GB NVMe\nDDoS-bescherming",
+   "url": "#",
+   "active": true
+  },
+  {
+   "id": "p6",
+   "cat": "c3",
+   "name": "VDS 1",
+   "price": "15.00",
+   "period": "mnd",
+   "badge": "",
+   "desc": "Dedicated vCPU-cores op AMD Ryzen.",
+   "features": "2 dedicated cores\n8 GB RAM\n80 GB NVMe\nDDoS-bescherming",
+   "url": "#",
+   "active": true
+  },
+  {
+   "id": "p7",
+   "cat": "c4",
+   "name": "Ryzen 7",
+   "price": "89.00",
+   "period": "mnd",
+   "badge": "",
+   "desc": "Een eigen fysieke server.",
+   "features": "8 cores / 16 threads\n64 GB RAM\n2× 1 TB NVMe\nDDoS-bescherming",
+   "url": "#",
+   "active": true
+  }
+ ],
+ "locations": [
+  {
+   "id": "l1",
+   "flag": "🇳🇱",
+   "city": "Amsterdam",
+   "country": "Nederland"
+  },
+  {
+   "id": "l2",
+   "flag": "🇩🇪",
+   "city": "Frankfurt",
+   "country": "Duitsland"
+  },
+  {
+   "id": "l3",
+   "flag": "🇺🇸",
+   "city": "New York",
+   "country": "Verenigde Staten"
+  },
+  {
+   "id": "l4",
+   "flag": "🇸🇬",
+   "city": "Singapore",
+   "country": "Singapore"
+  }
+ ],
+ "reviews": [
+  {
+   "id": "r1",
+   "name": "Klantnaam",
+   "stars": "5",
+   "text": "Voorbeeldreview: vervang dit in het admin-panel door een echte review."
+  },
+  {
+   "id": "r2",
+   "name": "Klantnaam",
+   "stars": "5",
+   "text": "Voorbeeldreview: vervang dit in het admin-panel door een echte review."
+  }
+ ],
+ "features": [
+  {
+   "id": "f1",
+   "icon": "🛡️",
+   "title": "24/7 DDoS-bescherming",
+   "text": "Aanvallen worden gefilterd voordat ze je server bereiken."
+  },
+  {
+   "id": "f2",
+   "icon": "⚡",
+   "title": "Lage ping",
+   "text": "Snelle hardware en een snel netwerk voor stabiele prestaties."
+  },
+  {
+   "id": "f3",
+   "icon": "💾",
+   "title": "Gratis back-ups",
+   "text": "Je data is veilig en snel terug te zetten."
+  },
+  {
+   "id": "f4",
+   "icon": "🇳🇱",
+   "title": "Dutch support",
+   "text": "Hulp in het Nederlands, wanneer je het nodig hebt."
+  }
+ ],
+ "pages": [
+  {
+   "id": "g1",
+   "slug": "voorwaarden",
+   "title": "Algemene voorwaarden",
+   "body": "# Definities\nBeschrijf hier partijen en diensten.\n\n# Betaling\nBeschrijf prijzen, facturatie en opzegging."
+  },
+  {
+   "id": "g2",
+   "slug": "privacy",
+   "title": "Privacybeleid",
+   "body": "# Welke gegevens we verwerken\nBeschrijf hier welke gegevens je verzamelt en waarom."
+  },
+  {
+   "id": "g3",
+   "slug": "help",
+   "title": "Helpcentrum",
+   "body": "# Hoe snel is mijn server klaar?\nDirect na betaling.\n\n# Hoe neem ik contact op?\nVia Discord of e-mail."
+  }
+ ]
+}

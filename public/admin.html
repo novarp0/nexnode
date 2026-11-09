@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Admin | NexNode</title><link rel="icon" href="assets/favicon.png"><link rel="stylesheet" href="style.css">
+<style>
+body{background-image:none}.box{max-width:420px;margin:12vh auto;padding:32px}.box h1{font-size:1.6rem}
+input,select,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#050805;color:var(--text);font:inherit}input:focus,textarea:focus,select:focus{outline:0;border-color:var(--g)}
+label{display:block;font-size:.82rem;color:var(--mute);margin:12px 0 4px}label.ck{display:flex;gap:8px;align-items:center;color:var(--text)}label.ck input{width:auto}
+.top{display:flex;gap:12px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);background:#020302;position:sticky;top:0;z-index:9}.top b{flex:1}
+.wrap{display:grid;grid-template-columns:210px 1fr;gap:24px;max-width:1100px;margin:24px auto;padding:0 20px}
+.side button{display:block;width:100%;text-align:left;margin-bottom:8px;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--mute);cursor:pointer;font:inherit}
+.side button.on{color:#031006;background:var(--g);border-color:var(--g);font-weight:700}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;padding:0 16px}summary{cursor:pointer;padding:14px 0;font-weight:600}details[open]{padding-bottom:16px}
+.row{display:flex;gap:8px;margin-top:14px}.row button{padding:7px 12px;font-size:.85rem}.danger{border-color:#7a1f1f!important;color:#ff7b7b!important}
+.msg{position:fixed;bottom:20px;right:20px;padding:12px 18px;border-radius:10px;background:var(--g);color:#031006;font-weight:700;display:none}.msg.err{background:#ff5252;color:#fff}
+.err{color:#ff7b7b;margin-top:10px}@media(max-width:760px){.wrap{grid-template-columns:1fr}.side{display:flex;gap:8px;overflow-x:auto}.side button{white-space:nowrap;width:auto}}
+</style></head><body>
+<div id="login" class="card box" style="display:none"><div class="logo" style="margin-bottom:14px"><img src="assets/logo.png" alt="">NexNode Admin</div><h1>Inloggen</h1>
+<label>Gebruikersnaam</label><input id="u" autocomplete="username"><label>Wachtwoord</label><input id="p" type="password" autocomplete="current-password">
+<button class="btn p" id="go" style="width:100%;margin-top:18px">Inloggen</button><div class="err" id="lerr"></div></div>
+<div id="app" style="display:none"><div class="top"><div class="logo"><img src="assets/logo.png" alt="">Admin</div><b></b><a class="btn" href="index.html" target="_blank">Bekijk site</a><button class="btn" id="exp">Back-up</button><button class="btn" id="imp">Importeer</button><button class="btn p" id="save">Opslaan</button><button class="btn" id="out">Uitloggen</button><input type="file" id="file" accept=".json" style="display:none"></div>
+<div class="wrap"><div class="side" id="side"></div><div id="main"></div></div></div><div class="msg" id="msg"></div>
+<script>
+const $=s=>document.querySelector(s),uid=()=>Math.random().toString(36).slice(2,9);
+const F=(k,l,t='text')=>({k,l,t});let C,tab='settings',openI=-1;
+const S={
+settings:{t:'Teksten & instellingen',o:1,f:[F('brand','Merknaam'),F('tagline','Tagline (boven de titel)'),F('heroTitle','Hoofdtitel'),F('heroText','Introtekst','area'),F('ctaText','Hoofdknop-tekst'),F('promo','Promobalk-tekst (leeg = verbergen)'),F('promoLink','Promobalk-link'),F('panelUrl','Klantenpaneel-URL'),F('discord','Discord-link'),F('email','Contact e-mail'),F('logoImage','Logo (pad of URL)'),F('bannerImage','Banner (pad of URL)'),F('productsTitle','Titel: producten'),F('featuresTitle','Titel: voordelen'),F('locationsTitle','Titel: locaties'),F('reviewsTitle','Titel: reviews'),F('companyInfo','Bedrijfsgegevens (footer)','area'),F('footerText','Footertekst')]},
+categories:{t:'Categorieën',l:i=>(i.icon||'')+' '+(i.name||'Nieuw'),f:[F('icon','Icoon (emoji)'),F('name','Naam'),F('desc','Beschrijving')],b:()=>({icon:'📦',name:'Nieuwe categorie',desc:''})},
+products:{t:'Producten',l:i=>(i.name||'Nieuw')+' — € '+i.price,f:[F('cat','Categorie','cat'),F('name','Naam'),F('price','Prijs (bv 9.99)'),F('period','Per (bv mnd)'),F('badge','Badge (bv Populair)'),F('desc','Beschrijving','area'),F('features','Kenmerken (één per regel)','area'),F('url','Bestel-link'),F('active','Zichtbaar op de site','ck')],b:()=>({cat:C.categories[0]?.id||'',name:'Nieuw product',price:'0.00',period:'mnd',badge:'',desc:'',features:'',url:'#',active:true})},
+features:{t:'Voordelen',l:i=>(i.icon||'')+' '+i.title,f:[F('icon','Icoon (emoji)'),F('title','Titel'),F('text','Tekst','area')],b:()=>({icon:'✨',title:'Nieuw voordeel',text:''})},
+locations:{t:'Locaties',l:i=>(i.flag||'')+' '+i.city,f:[F('flag','Vlag (emoji)'),F('city','Stad'),F('country','Land')],b:()=>({flag:'🏳️',city:'Nieuwe stad',country:''})},
+reviews:{t:'Reviews',l:i=>i.name+' ('+i.stars+'★)',f:[F('name','Naam'),F('stars','Sterren (1-5)'),F('text','Tekst','area')],b:()=>({name:'Naam',stars:'5',text:''})},
+pages:{t:'Pagina’s (voorwaarden, privacy…)',l:i=>i.title,f:[F('title','Titel'),F('slug','Slug (in de URL, bv privacy)'),F('body','Tekst (regel met "# " = kop)','area')],b:()=>({title:'Nieuwe pagina',slug:'nieuw',body:''})}};
+const e=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function msg(t,err){const m=$('#msg');m.textContent=t;m.className='msg'+(err?' err':'');m.style.display='block';setTimeout(()=>m.style.display='none',3200)}
+function inp(sec,i,f,v){const d=`data-s="${sec}" data-i="${i}" data-k="${f.k}"`;
+ if(f.t==='area')return `<label>${f.l}</label><textarea rows="4" ${d}>${e(v)}</textarea>`;
+ if(f.t==='ck')return `<label class="ck"><input type="checkbox" ${d} ${v!==false?'checked':''}> ${f.l}</label>`;
+ if(f.t==='cat')return `<label>${f.l}</label><select ${d}>${C.categories.map(c=>`<option value="${e(c.id)}" ${c.id===v?'selected':''}>${e(c.name)}</option>`).join('')}</select>`;
+ return `<label>${f.l}</label><input ${d} value="${e(v)}">`}
+function render(){
+ $('#side').innerHTML=Object.entries(S).map(([k,v])=>`<button class="${k===tab?'on':''}" data-tab="${k}">${v.t}</button>`).join('');
+ const s=S[tab];let h=`<h2 style="margin-bottom:16px">${s.t}</h2>`;
+ if(s.o)h+=`<div class="card">${s.f.map(f=>inp(tab,'-',f,C[tab][f.k])).join('')}</div>`;
+ else{h+=C[tab].map((it,i)=>`<details ${i===openI?'open':''}><summary>${e(s.l(it))}</summary>${s.f.map(f=>inp(tab,i,f,it[f.k])).join('')}<div class="row"><button class="btn" data-a="up" data-i="${i}">↑</button><button class="btn" data-a="down" data-i="${i}">↓</button><button class="btn danger" data-a="del" data-i="${i}">Verwijderen</button></div></details>`).join('')+`<button class="btn p" data-a="add">+ Toevoegen</button>`}
+ $('#main').innerHTML=h}
+document.addEventListener('click',ev=>{
+ const t=ev.target.closest('[data-tab]');if(t){tab=t.dataset.tab;openI=-1;render();return}
+ const a=ev.target.closest('[data-a]');if(!a)return;const L=C[tab],i=+a.dataset.i;
+ if(a.dataset.a==='add'){L.push({id:uid(),...S[tab].b()});openI=L.length-1}
+ if(a.dataset.a==='del'&&confirm('Zeker weten?')){L.splice(i,1);openI=-1}
+ if(a.dataset.a==='up'&&i>0){[L[i-1],L[i]]=[L[i],L[i-1]];openI=i-1}
+ if(a.dataset.a==='down'&&i<L.length-1){[L[i+1],L[i]]=[L[i],L[i+1]];openI=i+1}
+ render()});
+document.addEventListener('input',ev=>{const d=ev.target.dataset;if(!d||!d.s)return;const v=ev.target.type==='checkbox'?ev.target.checked:ev.target.value;
+ if(d.i==='-')C[d.s][d.k]=v;else C[d.s][+d.i][d.k]=v});
+async function boot(){const me=await (await fetch('/api/me')).json().catch(()=>({}));
+ if(!me.ok){$('#app').style.display='none';$('#login').style.display='block';return}
+ $('#login').style.display='none';$('#app').style.display='block';C=await (await fetch('/api/content',{cache:'no-store'})).json();render()}
+$('#go').onclick=async()=>{const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:$('#u').value,pass:$('#p').value})});
+ const j=await r.json().catch(()=>({}));if(r.ok){$('#p').value='';boot()}else $('#lerr').textContent=j.error||'Inloggen mislukt'};
+$('#p').onkeydown=ev=>{if(ev.key==='Enter')$('#go').click()};
+$('#out').onclick=async()=>{await fetch('/api/logout',{method:'POST'});boot()};
+$('#save').onclick=async()=>{const r=await fetch('/api/content',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(C)});
+ const j=await r.json().catch(()=>({}));if(r.status===401){boot();return}msg(r.ok?'Opgeslagen ✓':(j.error||'Opslaan mislukt'),!r.ok)};
+$('#exp').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(C,null,1)],{type:'application/json'}));a.download='nexnode-backup.json';a.click()};
+$('#imp').onclick=()=>$('#file').click();
+$('#file').onchange=async ev=>{try{C=JSON.parse(await ev.target.files[0].text());render();msg('Geïmporteerd: klik Opslaan om te bewaren')}catch{msg('Ongeldig bestand',1)}};
+boot();
+</script></body></html>
